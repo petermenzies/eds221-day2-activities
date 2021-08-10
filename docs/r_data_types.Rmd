@@ -1,0 +1,62 @@
+---
+title: "R data types"
+author: "Peter Menzies"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Vectors lists and data frames
+
+```{r}
+vec_1 <- c(2, 5, 9, 10, 8, 12, 1, 0)
+
+class(vec_1)
+
+# what type of variable does it store?:
+typeof(vec_1)
+
+vec_1_e3 <- vec_1[[3]]
+vec_1_e1 <- vec_1[[1]]
+vec_1_e5to7 <- vec_1[5:7]
+
+vec_1_e5to7
+
+vec_2 <- c(town = "Santa Barbara", location = "Rincon", swell = "south")
+
+class(vec_2)
+typeof(vec_2)
+
+vec_2[2]
+vec_2["location"]
+
+length(vec_2)
+
+vec_2_e2 <- vec_2[2]
+```
+
+## Create a data frame in R, index
+
+```{r}
+df_1 <- data.frame(list(
+  region = c("A", "B", "A", "D"),
+  species = c("otter", "great white", "sea lion", "gray whale"),
+  count = c(12, 2, 36, 6)))
+
+df_1
+
+class(df_1)
+class(df_1$species)
+# alternatively:
+class(df_1[,1])
+
+max_count <- df_1[3, 3] # row 3, column 3
+max_count
+```
+
+
+

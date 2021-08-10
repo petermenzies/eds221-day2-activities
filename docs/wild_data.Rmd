@@ -1,0 +1,86 @@
+---
+title: "Wild Data"
+author: "Peter Menzies"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Read in the data
+
+```{r}
+mack_verts <- read_csv(here::here("data", "AS00601.csv"))
+
+mack_verts <- clean_names(mack_verts) # or use pipe op in line above
+```
+
+
+```{r}
+summary(mack_verts)
+dim(mack_verts)
+head(mack_verts)
+
+# 5th value in column "weight"
+mc_wt_5 <- mack_verts[5, "weight"]
+mc_wt_5
+
+mc_length_8_20 <- mack_verts[8:20, "length1"]
+
+mc_dates <- mack_verts$sampledate
+```
+
+## Make a sallie subset
+
+```{r}
+mc_salamanders <- mack_verts %>% 
+  filter(species == "DITE")
+```
+
+## Sallie scatterplot
+
+```{r}
+salamander_size <- ggplot(data = mc_salamanders, 
+                          aes(x = weight, y = length1)) +
+  geom_point(color = "dark blue", alpha = 0.7) +
+  labs(x = "Weight (g)", y = "Snout-vent length (mm)", title = "Snout-vent length vs. weight in Pacific giant salamanders")
+
+salamander_size
+```
+
+## Export sallie plot
+
+```{r}
+ggsave(here::here("figs", "salamander_size.png"),
+       plot = salamander_size)
+```
+
+
+## Make a cutthroat plot
+
+```{r}
+mc_trout <- mack_verts %>% 
+  filter(species == "ONCL")
+
+cutthroat_size <- ggplot(data = mc_trout,
+                         aes(x = weight, y = length1)) +
+  geom_point(aes(color = reach)) +
+  facet_wrap(~reach) +
+  labs(x = "Weight (g)", y = "Snout-vent length (mm)",
+       title = "Snout-vent length vs. weight separated by creek reach in cutthroat trout")
+
+cutthroat_size 
+```
+
+## Export trout plot
+
+```{r}
+ggsave(here::here("figs", "cutthroat_size.png"),
+       plot = cutthroat_size)
+```
+
